@@ -81,13 +81,13 @@ const portfolioData = {
     }
   ],
   gallery: [
-    { 
+    {
       id: 1, 
       caption: "Grade 10 Amateur Piano Exam", 
       description: "I passed the Grade 10 (highest level) of Amateur Piano Exam in Chinese Musician Association in 2015, after 5 years of outside-class piano lessons",
       path: "assets/piano_grade10.png",
     },
-    { 
+    {
       id: 2, 
       caption: "New Year Performance (Grade 12)", 
       description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School as opening piece of the party in 2022",
@@ -104,7 +104,7 @@ const portfolioData = {
   video: {
     title: "Supplementary Piano Performance",
     description: "This is a one-time casual performance of “Secret Base” (from Anohana), arranged by Animenz. I have included this supplementary video to demonstrate the keyboard fluency and harmonic intuition referenced in my Statement of Purpose. While my primary focus is computational research, this performance serves to validate my practical understanding of the textures, polyphony, and voice-leading, which are domain knowledge I bring to both music generation and music information retrieval tasks, allowing me to bridge the gap between symbolic representation (MIDI) and physical execution, and evaluate generation quality of models in research. It's recorded in a school practice room in 2025. The piece was selected to showcase control over voicing in a pop piano arrangement style similar to the datasets (e.g., POP909) utilized in my research.",
-    path: "assets/video.mp4", // Replace with your actual video filename in public/assets/
+    path: "https://drive.google.com/file/d/1KLGBYP5t0vtVWRnuBrXLOzPemz_iQfZP/view?usp=sharing",
   }
 };
 
@@ -116,6 +116,39 @@ const getLocalUrl = (localPath, fallbackUrl) => {
   // For this preview environment, we fallback to the online URL if the local file isn't found.
   // Note: In a real React app, you might use: process.env.PUBLIC_URL + '/' + localPath
   return fallbackUrl || localPath; 
+};
+
+const getVideoSource = (pathOrUrl, fallbackUrl) => {
+  if (!pathOrUrl) return '';
+
+  const normalizeDriveLink = (input) => {
+    try {
+      const url = new URL(input);
+      if (!url.hostname.includes('drive.google.com')) return null;
+
+      let fileId = url.searchParams.get('id');
+      if (!fileId) {
+        const match = url.pathname.match(/\/(?:file\/)?d\/([^/]+)/);
+        if (match) {
+          fileId = match[1];
+        }
+      }
+
+      if (fileId) {
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+      return input;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  if (pathOrUrl.startsWith('http')) {
+    const driveUrl = normalizeDriveLink(pathOrUrl);
+    return driveUrl || pathOrUrl;
+  }
+
+  return getLocalUrl(pathOrUrl, fallbackUrl);
 };
 
 // --- COMPONENTS ---
@@ -411,7 +444,7 @@ export default function App() {
       {/* SECTION C: ACTIVITIES */}
       <Section title="Activities & Gallery" id="activities" icon={Cpu}>
         <p className="text-slate-400 max-w-2xl mb-8">
-            Documentation of performances, hackathons, and teaching experiences.
+            Documentation of performances and certificates.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {portfolioData.gallery.map((item) => (
@@ -441,11 +474,11 @@ export default function App() {
             {/* Video Player (Left) */}
             <div className="w-full lg:w-3/5">
               <div className="aspect-video bg-black rounded-xl overflow-hidden border border-slate-700 shadow-2xl relative group">
-                 <video 
-                   controls 
-                   className="w-full h-full object-cover"
-                   src={getLocalUrl(portfolioData.video.path)}
-                 >
+                  <video 
+                    controls 
+                    className="w-full h-full object-cover"
+                    src={getVideoSource(portfolioData.video.path, portfolioData.video.fallback)}
+                  >
                    Your browser does not support the video tag.
                  </video>
               </div>
