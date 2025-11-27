@@ -2,6 +2,20 @@ import React from 'react';
 import { FileText, Github, Mail, ExternalLink, Music, Cpu, Layers, ArrowDownCircle } from 'lucide-react';
 import 'html-midi-player';
 
+// --- ICONS ---
+const GoogleScholar = ({ size = 24, className }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z" />
+  </svg>
+);
+
 // --- DATA CONFIGURATION ---
 const portfolioData = {
   personal: {
@@ -10,6 +24,7 @@ const portfolioData = {
     bio: "I'm Mingyang Yao, a senior undergraduate of Mathematics-Computer Science and Cognitive Science at UCSD. My research interests lies in generative models for music and music information retrieval.",
     email: "m5yao@ucsd.edu",
     github: "https://github.com/AndyWeasley2004",
+    googleScholar: "https://scholar.google.com",
     photoPath: "assets/photo.jpg", 
   },
   papers: [
@@ -74,7 +89,7 @@ const portfolioData = {
       id: 2, 
       caption: "New Year in High School", 
       description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School in 2022",
-      path: "assets/new_year.jpg",
+      path: "/assets/new_year.jpg",
     },
     { 
       id: 3, 
@@ -119,6 +134,7 @@ const AudioPlayerCard = ({ demo }) => {
           ></midi-player>
           <midi-visualizer
             type="piano-roll"
+            src={demo.midiUrl}
             id={`visualizer-${demo.id}`}
             style={{ width: '100%', height: '200px', marginTop: '1rem', borderRadius: '0.5rem', background: '#0f172a' }}
           ></midi-visualizer>
@@ -189,7 +205,7 @@ const PaperCard = ({ paper }) => (
           <div className="p-3 border-b border-slate-800 bg-slate-900/50 flex items-center gap-2">
             <Layers size={14} className="text-slate-500"/>
             <span className="text-xs text-slate-400 font-mono">
-              Figure: {paper.id === "paper2" ? "Confusion Matrix / Model Stats" : "System Architecture"}
+               Figure: {"Model Architecture"}
             </span>
           </div>
           <div className="relative min-h-[300px] bg-slate-900 flex items-center justify-center group">
@@ -257,8 +273,8 @@ const Hero = () => (
           <a href={portfolioData.personal.github} className="p-3 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition-colors text-slate-400">
             <Github size={20} />
           </a>
-          <a href={portfolioData.personal.arxiv} className="p-3 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition-colors text-slate-400">
-            <FileText size={20} />
+          <a href={portfolioData.personal.googleScholar} className="p-3 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition-colors text-slate-400">
+            <GoogleScholar size={20} />
           </a>
           <a href={`mailto:${portfolioData.personal.email}`} className="p-3 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition-colors text-slate-400">
             <Mail size={20} />
@@ -294,8 +310,8 @@ export default function App() {
       <Section title="Research Papers" id="papers" icon={FileText}>
         <div className="space-y-4">
             <p className="text-slate-400 max-w-2xl mb-12">
-                My academic work focuses on transformer architectures and real-time DSP. 
-                Below are selected publications including system architecture diagrams.
+                My academic work focuses on controllable symbolic music generation and MIR tasks such as symbolic chord recognition. 
+                Below are selected publications including model architecture diagrams.
             </p>
             {portfolioData.papers.map(paper => (
                 <PaperCard key={paper.id} paper={paper} />
