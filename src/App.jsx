@@ -101,6 +101,8 @@ const portfolioData = {
   ]
 };
 
+const HAND_SPLIT_PITCH = 60; // Roughly middle C, separates left/right hand ranges
+
 // --- HELPER: Handles Local Files vs Fallbacks ---
 const getLocalUrl = (localPath, fallbackUrl) => {
   // In production (deployed), we rely on the relative path resolving correctly.
@@ -136,6 +138,33 @@ const AudioPlayerCard = ({ demo }) => {
     if (playerEl.getAttribute('visualizer') !== selector) {
       playerEl.setAttribute('visualizer', selector);
     }
+  }, [demo.id, demo.midiUrl]);
+
+  useEffect(() => {
+    if (!visualizerRef.current) return;
+
+    const visualizerEl = visualizerRef.current;
+
+    const colorizeByPitch = () => {
+      const svg = visualizerEl.querySelector('svg');
+      if (!svg) return;
+      svg.querySelectorAll('rect.note').forEach(rect => {
+        const pitch = Number(rect.dataset.pitch);
+        if (!Number.isFinite(pitch)) return;
+        const isRightHand = pitch >= HAND_SPLIT_PITCH;
+        rect.classList.toggle('note-right', isRightHand);
+        rect.classList.toggle('note-left', !isRightHand);
+      });
+    };
+
+    const observer = new MutationObserver(() => {
+      colorizeByPitch();
+    });
+
+    observer.observe(visualizerEl, { childList: true, subtree: true });
+    colorizeByPitch();
+
+    return () => observer.disconnect();
   }, [demo.id, demo.midiUrl]);
 
   return (
