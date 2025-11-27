@@ -138,6 +138,15 @@ const AudioPlayerCard = ({ demo }) => {
     if (playerEl.getAttribute('visualizer') !== selector) {
       playerEl.setAttribute('visualizer', selector);
     }
+
+    if (typeof playerEl.addVisualizer === 'function') {
+      playerEl.addVisualizer(visualizerEl);
+      return () => {
+        playerEl.removeVisualizer?.(visualizerEl);
+      };
+    }
+
+    return undefined;
   }, [demo.id, demo.midiUrl]);
 
   useEffect(() => {
