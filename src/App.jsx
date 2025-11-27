@@ -112,21 +112,31 @@ const getLocalUrl = (localPath, fallbackUrl) => {
 // --- COMPONENTS ---
 
 const AudioPlayerCard = ({ demo }) => {
+  const playerRef = useRef(null);
   const visualizerRef = useRef(null);
 
   useEffect(() => {
-    // Set config via JavaScript since web components don't accept object attributes
-    if (visualizerRef.current) {
-      visualizerRef.current.config = {
-        noteRGB: '99, 179, 237',        // Bright sky blue for inactive notes (visible on dark bg)
-        activeNoteRGB: '251, 191, 36',  // Bright amber/gold for active notes (high contrast)
-        pixelsPerTimeStep: 60,          // Wider spacing for better visibility
-        noteHeight: 6,                  // Taller notes for better visibility
-        minPitch: 21,                   // Piano range start (A0)
-        maxPitch: 108                   // Piano range end (C8)
-      };
+    if (!playerRef.current || !visualizerRef.current) return;
+
+    const visualizerEl = visualizerRef.current;
+    const playerEl = playerRef.current;
+    const selector = `#visualizer-${demo.id}`;
+
+    visualizerEl.config = {
+      noteRGB: '56, 189, 248',       // brighter cyan notes
+      activeNoteRGB: '250, 204, 21', // saturated highlight for active notes
+      pixelsPerTimeStep: 55,
+      noteHeight: 4,
+    };
+
+    if (visualizerEl.src !== demo.midiUrl) {
+      visualizerEl.src = demo.midiUrl;
     }
-  }, [demo.id]);
+
+    if (playerEl.getAttribute('visualizer') !== selector) {
+      playerEl.setAttribute('visualizer', selector);
+    }
+  }, [demo.id, demo.midiUrl]);
 
   return (
     <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-indigo-500 transition-all group">
@@ -143,6 +153,7 @@ const AudioPlayerCard = ({ demo }) => {
 
         <div className="w-full rounded-lg overflow-hidden bg-slate-900 border border-slate-700 p-4">
           <midi-player
+            ref={playerRef}
             src={demo.midiUrl}
             sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
             visualizer={`#visualizer-${demo.id}`}
@@ -151,16 +162,8 @@ const AudioPlayerCard = ({ demo }) => {
           <midi-visualizer
             ref={visualizerRef}
             type="piano-roll"
-            src={demo.midiUrl}
             id={`visualizer-${demo.id}`}
-            style={{ 
-              width: '100%', 
-              height: '200px', 
-              marginTop: '1rem', 
-              borderRadius: '0.5rem', 
-              background: '#0f172a',
-              display: 'block'
-            }}
+            style={{ width: '100%', height: '200px', marginTop: '1rem', borderRadius: '0.5rem', background: '#0f172a' }}
           ></midi-visualizer>
         </div>
       </div>
