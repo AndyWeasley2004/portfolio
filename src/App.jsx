@@ -118,8 +118,8 @@ const getLocalUrl = (localPath, fallbackUrl) => {
   return fallbackUrl || localPath; 
 };
 
-const getVideoSource = (pathOrUrl, fallbackUrl) => {
-  if (!pathOrUrl) return '';
+const resolveVideoSource = (pathOrUrl, fallbackUrl) => {
+  if (!pathOrUrl) return { type: 'video', src: '' };
 
   const normalizeDriveLink = (input) => {
     try {
@@ -134,21 +134,24 @@ const getVideoSource = (pathOrUrl, fallbackUrl) => {
         }
       }
 
-      if (fileId) {
-        return `https://drive.google.com/uc?export=download&id=${fileId}`;
-      }
-      return input;
+      return fileId || null;
     } catch (error) {
       return null;
     }
   };
 
   if (pathOrUrl.startsWith('http')) {
-    const driveUrl = normalizeDriveLink(pathOrUrl);
-    return driveUrl || pathOrUrl;
+    const driveId = normalizeDriveLink(pathOrUrl);
+    if (driveId) {
+      return {
+        type: 'drive',
+        src: `https://drive.google.com/file/d/${driveId}/preview`
+      };
+    }
+    return { type: 'video', src: pathOrUrl };
   }
 
-  return getLocalUrl(pathOrUrl, fallbackUrl);
+  return { type: 'video', src: getLocalUrl(pathOrUrl, fallbackUrl) };
 };
 
 // --- COMPONENTS ---
@@ -408,6 +411,7 @@ const Hero = () => (
 );
 
 export default function App() {
+  const videoSource = resolveVideoSource(portfolioData.video.path, portfolioData.video.fallback);
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 font-sans selection:bg-indigo-500/30 scroll-smooth">
       <NavBar />
@@ -474,13 +478,24 @@ export default function App() {
             {/* Video Player (Left) */}
             <div className="w-full lg:w-3/5">
               <div className="aspect-video bg-black rounded-xl overflow-hidden border border-slate-700 shadow-2xl relative group">
-                  <video 
-                    controls 
-                    className="w-full h-full object-cover"
-                    src={getVideoSource(portfolioData.video.path, portfolioData.video.fallback)}
-                  >
-                   Your browser does not support the video tag.
-                 </video>
+                  {videoSource.type === 'drive' ? (
+                    <iframe
+                      title={portfolioData.video.title}
+                      src={videoSource.src}
+                      className="w-full h-full"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                      loading="lazy"
+                    ></iframe>
+                  ) : (
+                    <video 
+                      controls 
+                      className="w-full h-full object-cover"
+                      src={videoSource.src}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
               </div>
             </div>
             
