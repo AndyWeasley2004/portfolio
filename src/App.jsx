@@ -89,7 +89,7 @@ const portfolioData = {
       id: 2, 
       caption: "New Year in High School", 
       description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School in 2022",
-      path: "/assets/new_year.jpg",
+      path: "/assets/new_year.jpeg",
     },
     { 
       id: 3, 
@@ -136,6 +136,12 @@ const AudioPlayerCard = ({ demo }) => {
             type="piano-roll"
             src={demo.midiUrl}
             id={`visualizer-${demo.id}`}
+            config={{
+              noteRGB: '100, 116, 139', 
+              activeNoteRGB: '129, 140, 248', 
+              pixelsPerTimeStep: 40, 
+              noteHeight: 3 
+            }}
             style={{ width: '100%', height: '200px', marginTop: '1rem', borderRadius: '0.5rem', background: '#0f172a' }}
           ></midi-visualizer>
         </div>
