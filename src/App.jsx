@@ -113,7 +113,7 @@ const AudioPlayerCard = ({ demo }) => {
         <div className="w-full rounded-lg overflow-hidden bg-slate-900 border border-slate-700 p-4">
           <midi-player
             src={demo.midiUrl}
-            sound-font
+            sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
             visualizer={`#visualizer-${demo.id}`}
             style={{ width: '100%' }}
           ></midi-player>
@@ -130,10 +130,10 @@ const AudioPlayerCard = ({ demo }) => {
 
 const PaperCard = ({ paper }) => (
   <div className="bg-slate-900/50 rounded-2xl p-6 md:p-8 border border-slate-800 mb-12 last:mb-0">
-    <div className="flex flex-col lg:flex-row gap-10">
+    <div className="flex flex-col gap-10">
       
       {/* Text Section */}
-      <div className="flex-1 space-y-6">
+      <div className="w-full space-y-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider">
             <FileText size={14}/>
@@ -184,20 +184,20 @@ const PaperCard = ({ paper }) => (
       </div>
 
       {/* Visual Section */}
-      <div className="w-full lg:w-5/12">
-        <div className="bg-slate-950 rounded-xl overflow-hidden border border-slate-800 h-full">
+      <div className="w-full">
+        <div className="bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
           <div className="p-3 border-b border-slate-800 bg-slate-900/50 flex items-center gap-2">
             <Layers size={14} className="text-slate-500"/>
             <span className="text-xs text-slate-400 font-mono">
               Figure: {paper.id === "paper2" ? "Confusion Matrix / Model Stats" : "System Architecture"}
             </span>
           </div>
-          <div className="relative h-full min-h-[250px] bg-slate-900 flex items-center justify-center group">
+          <div className="relative min-h-[300px] bg-slate-900 flex items-center justify-center group">
              {/* Note: We use the local path if provided, otherwise the fallback */}
              <img 
                 src={getLocalUrl(paper.visualPath, paper.fallbackVisual)} 
                 alt="Technical Diagram" 
-                className="w-full h-full object-contain p-4 transition-opacity opacity-90 group-hover:opacity-100"
+                className="w-full h-auto object-contain p-4 transition-opacity opacity-90 group-hover:opacity-100"
             />
           </div>
         </div>
