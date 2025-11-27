@@ -2,3 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+/* MIDI Visualizer Styling */
+midi-visualizer {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+midi-visualizer svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Note styling for piano-roll visualizer */
+midi-visualizer svg rect.note {
+  opacity: 0.8;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 0.5;
+  rx: 2;
+  transition: opacity 0.1s ease;
+}
+
+/* Active notes - much brighter and more visible */
+midi-visualizer svg rect.note.active {
+  opacity: 1;
+  stroke: #fbbf24;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+}
+
+/* MIDI Player Styling */
+midi-player {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+midi-player::part(control-panel) {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid #334155;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+}
+
+midi-player::part(play-button) {
+  color: #e2e8f0;
+  border: none;
+  background: transparent;
+  transition: color 0.2s ease;
+}
+
+midi-player::part(play-button):hover {
+  color: #818cf8;
+}
+
+midi-player::part(time) {
+  color: #94a3b8;
+  font-family: ui-monospace, monospace;
+}
+
+midi-player::part(current-time) {
+  color: #e2e8f0;
+}
+
+midi-player::part(total-time) {
+  color: #64748b;
+}
+
+midi-player::part(seek-bar) {
+  background: #334155;
+  border-radius: 999px;
+  height: 6px;
+}
+
+midi-player::part(seek-bar)::-webkit-slider-thumb {
+  background: #818cf8;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+midi-player::part(seek-bar)::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #818cf8 0%, #818cf8 var(--progress, 0%), #334155 var(--progress, 0%), #334155 100%);
+}

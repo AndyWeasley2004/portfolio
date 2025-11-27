@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FileText, Github, Mail, ExternalLink, Music, Cpu, Layers, ArrowDownCircle } from 'lucide-react';
 import 'html-midi-player';
 
@@ -112,6 +112,22 @@ const getLocalUrl = (localPath, fallbackUrl) => {
 // --- COMPONENTS ---
 
 const AudioPlayerCard = ({ demo }) => {
+  const visualizerRef = useRef(null);
+
+  useEffect(() => {
+    // Set config via JavaScript since web components don't accept object attributes
+    if (visualizerRef.current) {
+      visualizerRef.current.config = {
+        noteRGB: '99, 179, 237',        // Bright sky blue for inactive notes (visible on dark bg)
+        activeNoteRGB: '251, 191, 36',  // Bright amber/gold for active notes (high contrast)
+        pixelsPerTimeStep: 60,          // Wider spacing for better visibility
+        noteHeight: 6,                  // Taller notes for better visibility
+        minPitch: 21,                   // Piano range start (A0)
+        maxPitch: 108                   // Piano range end (C8)
+      };
+    }
+  }, [demo.id]);
+
   return (
     <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-indigo-500 transition-all group">
       <div className="flex flex-col gap-4">
@@ -133,16 +149,18 @@ const AudioPlayerCard = ({ demo }) => {
             style={{ width: '100%' }}
           ></midi-player>
           <midi-visualizer
+            ref={visualizerRef}
             type="piano-roll"
             src={demo.midiUrl}
             id={`visualizer-${demo.id}`}
-            config={{
-              noteRGB: '100, 116, 139', 
-              activeNoteRGB: '129, 140, 248', 
-              pixelsPerTimeStep: 40, 
-              noteHeight: 3 
+            style={{ 
+              width: '100%', 
+              height: '200px', 
+              marginTop: '1rem', 
+              borderRadius: '0.5rem', 
+              background: '#0f172a',
+              display: 'block'
             }}
-            style={{ width: '100%', height: '200px', marginTop: '1rem', borderRadius: '0.5rem', background: '#0f172a' }}
           ></midi-visualizer>
         </div>
       </div>
