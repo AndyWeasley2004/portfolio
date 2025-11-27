@@ -21,7 +21,7 @@ const portfolioData = {
   personal: {
     name: "Mingyang Yao",
     title: "Undergraduate Student at UC San Diego",
-    bio: "I'm Mingyang Yao, a senior undergraduate of Mathematics-Computer Science and Cognitive Science at UCSD. My research interests lies in generative models for music and music information retrieval.",
+    bio: "I'm Mingyang Yao, a senior undergraduate of Mathematics-Computer Science and Cognitive Science (neural computation and machine learning) at UCSD. My research interests lies in generative models for music and music information retrieval (MIR). I wish to develop collaborative and creative music AI system in the future.",
     email: "m5yao@ucsd.edu",
     github: "https://github.com/AndyWeasley2004",
     googleScholar: "https://scholar.google.com",
@@ -32,13 +32,13 @@ const portfolioData = {
       id: "paper1",
       title: "From Generality to Mastery: Composer-Style Symbolic Music Generation via Large-Scale Pre-training",
       type: "Research Paper",
-      role: "First Author",
+      role: "First Author: full research and experiment pipeline contribution",
       links: [
         { label: "Read on arXiv", url: "https://arxiv.org/abs/2506.17497", icon: FileText },
         { label: "View Full Project Demo", url: "https://generality-mastery.github.io/", icon: ExternalLink },
         { label: "GitHub Repo", url: "https://github.com/AndyWeasley2004/Generality-to-Mastery", icon: Github }
       ],
-      abstract: "We address data scarcity in style-specific generation using a two-stage training paradigm. By pre-training a model on a broad corpus with extended REMI representation and fine-tuning with lightweight adapters on verified datasets of Bach, Mozart, Beethoven, and Chopin, we achieve superior style accuracy and musicality compared to concurrent baselines.",
+      abstract: "We address data scarcity in style-specific generation using a two-stage training paradigm. By pre-training a model on a broad corpus with extended REMI representation and fine-tuning with lightweight adapters on verified datasets of Bach, Mozart, Beethoven, and Chopin, we achieve superior style-fidelity and music quality compared to concurrent baselines. The evaluation consists of both objective metrics and subjective listening tests. This project demonstrates the potential of generative models in creating music with high-level control.",
       techStack: ["PyTorch", "MIDI", "Transformer"],
       // Figure 1: Architecture
       visualPath: "assets/paper_1_arch.png",
@@ -49,13 +49,13 @@ const portfolioData = {
       id: "paper2",
       title: "BACHI: Boundary-Aware Symbolic Chord Recognition Through Masked Iterative Decoding on Pop and Classical Music",
       type: "Research Paper",
-      role: "First Author",
+      role: "First Author: full research and experiment pipeline contribution",
       links: [
         { label: "Read on arXiv", url: "https://arxiv.org/abs/2510.06528", icon: FileText },
         { label: "View Full Project Demo", url: "https://andyweasley2004.github.io/BACHI/", icon: ExternalLink },
         { label: "GitHub Repo", url: "https://github.com/AndyWeasley2004/BACHI_Chord_Recognition", icon: Github }
       ],
-      abstract: "We propose BACHI, a symbolic chord recognition model that mirrors human analysis by iteratively ranking chord roots, qualities, and bass notes. We also introduce POP909-CL, an enhanced dataset with tempo-aligned labels. Experiments demonstrate state-of-the-art performance on both classical and pop music benchmarks.",
+      abstract: "We propose BACHI, a symbolic chord recognition model that mirrors human cognitive strategies by iteratively decoding chord roots, qualities, and bass notes based on model's confidence. To address lack of large chord-annotated dataset, we also introduce POP909-CL, an enhanced version of original POP909 dataset with chord progression labels and correct metadata like key, time signature, and initial beat. Experiments demonstrate state-of-the-art performance of our BACHI on both classical and pop music benchmarks. This project demonstrates the importance of incorporating human cognition in music AI systems and provides a well-annotated dataset for further research in MIR.",
       techStack: ["PyTorch", "Piano Roll", "Chord"],
       // Figure 2: Confusion Matrix / Technical Illustration
       visualPath: "assets/paper_2_arch.png",
@@ -68,14 +68,16 @@ const portfolioData = {
       title: "Generality-to-Mastery Output: Bach Style",
       description: "Generated with Temperature 1.1, Tempo 120, 4/4 Time Signature",
       relatedPaperId: "paper1",
-      midiUrl: "assets/bach.mid"
+      midiUrl: "assets/bach.mid",
+      handSplitPitch: 60
     },
     {
       id: "demo2",
       title: "Generality-to-Mastery Output: Chopin Style",
       description: "Generated with Temperature 1.1, Tempo 160, 3/4 Time Signature",
       relatedPaperId: "paper1",
-      midiUrl: "assets/chopin.mid"
+      midiUrl: "assets/chopin.mid",
+      handSplitPitch: 65
     }
   ],
   gallery: [
@@ -87,21 +89,21 @@ const portfolioData = {
     },
     { 
       id: 2, 
-      caption: "New Year in High School", 
+      caption: "New Year Performance (Grade 12)", 
       description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School in 2022",
-      path: "/assets/new_year.jpeg",
+      path: "/assets/new_year.png",
     },
-    { 
+    {
       id: 3, 
-      caption: "Audio Workshop Teaching", 
-      description: "Designed and taught a 2-day workshop on Python for Audio Signal Processing to undergraduate students.",
-      path: "assets/activity3.jpg",
+      caption: "Second Prize in Performance Contest (Grade 7)", 
+      description: "I won the second prize in the instrument performance contest of Grade 7 in my middle school with Chopin's Waltz, Op. 69, No. 2",
+      path: "assets/grade7_contest.jpg",
       fallback: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=600"
     }
   ]
 };
 
-const HAND_SPLIT_PITCH = 60; // Roughly middle C, separates left/right hand ranges
+const DEFAULT_HAND_SPLIT_PITCH = 60; // Roughly middle C, separates left/right hand ranges
 
 // --- HELPER: Handles Local Files vs Fallbacks ---
 const getLocalUrl = (localPath, fallbackUrl) => {
@@ -160,7 +162,8 @@ const AudioPlayerCard = ({ demo }) => {
       svg.querySelectorAll('rect.note').forEach(rect => {
         const pitch = Number(rect.dataset.pitch);
         if (!Number.isFinite(pitch)) return;
-        const isRightHand = pitch >= HAND_SPLIT_PITCH;
+        const splitPoint = demo.handSplitPitch ?? DEFAULT_HAND_SPLIT_PITCH;
+        const isRightHand = pitch >= splitPoint;
         rect.classList.toggle('note-right', isRightHand);
         rect.classList.toggle('note-left', !isRightHand);
       });
