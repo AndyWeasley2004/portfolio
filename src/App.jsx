@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { FileText, Github, Mail, ExternalLink, Music, Cpu, Layers, ArrowDownCircle } from 'lucide-react';
+import { FileText, Github, Mail, ExternalLink, Music, Cpu, Layers, ArrowDownCircle, Video } from 'lucide-react';
 import 'html-midi-player';
 
 // --- ICONS ---
@@ -100,7 +100,12 @@ const portfolioData = {
       path: "assets/grade7_contest.jpg",
       fallback: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=600"
     }
-  ]
+  ],
+  video: {
+    title: "Supplementary Piano Performance",
+    description: "This is a one-time casual performance of “Secret Base” (from Anohana), arranged by Animenz. I have included this supplementary video to demonstrate the keyboard fluency and harmonic intuition referenced in my Statement of Purpose. While my primary focus is computational research, this performance serves to validate my practical understanding of the textures, polyphony, and voice-leading, which are domain knowledge I bring to both music generation and music information retrieval tasks, allowing me to bridge the gap between symbolic representation (MIDI) and physical execution, and evaluate generation quality of models in research. It's recorded in a school practice room in 2025. The piece was selected to showcase control over voicing in a pop piano arrangement style similar to the datasets (e.g., POP909) utilized in my research.",
+    path: "assets/video.mp4", // Replace with your actual video filename in public/assets/
+  }
 };
 
 const DEFAULT_HAND_SPLIT_PITCH = 60; // Roughly middle C, separates left/right hand ranges
@@ -315,6 +320,7 @@ const NavBar = () => (
         <a href="#papers" className="hover:text-indigo-400 transition-colors">Papers</a>
         <a href="#demos" className="hover:text-indigo-400 transition-colors">MIDI Demos</a>
         <a href="#activities" className="hover:text-indigo-400 transition-colors">Activities</a>
+        <a href="#video" className="hover:text-indigo-400 transition-colors">Video</a>
       </div>
     </div>
   </nav>
@@ -388,7 +394,7 @@ export default function App() {
       </Section>
 
       {/* SECTION B: MIDI DEMOS */}
-      <Section title="Code & MIDI Demos" id="demos" icon={Music}>
+      <Section title="MIDI Demos" id="demos" icon={Music}>
         <div className="grid grid-cols-1 gap-6">
             <div className="mb-6">
                 <p className="text-slate-400 max-w-2xl">
@@ -425,6 +431,34 @@ export default function App() {
               </div>
             </div>
           ))}
+        </div>
+      </Section>
+
+      {/* SECTION D: VIDEO */}
+      <Section title="Featured Video" id="video" icon={Video}>
+        <div className="bg-slate-900/50 rounded-2xl p-6 md:p-8 border border-slate-800">
+          <div className="flex flex-col lg:flex-row gap-8 items-center">
+            {/* Video Player (Left) */}
+            <div className="w-full lg:w-3/5">
+              <div className="aspect-video bg-black rounded-xl overflow-hidden border border-slate-700 shadow-2xl relative group">
+                 <video 
+                   controls 
+                   className="w-full h-full object-cover"
+                   src={getLocalUrl(portfolioData.video.path)}
+                 >
+                   Your browser does not support the video tag.
+                 </video>
+              </div>
+            </div>
+            
+            {/* Description (Right) */}
+            <div className="w-full lg:w-2/5 space-y-4">
+              <h3 className="text-2xl font-bold text-slate-100">{portfolioData.video.title}</h3>
+              <div className="prose prose-invert text-slate-300">
+                <p>{portfolioData.video.description}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </Section>
 
