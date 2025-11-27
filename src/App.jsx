@@ -66,7 +66,7 @@ const portfolioData = {
   gallery: [
     { 
       id: 1, 
-      caption: "Grade 10 AmateurPiano Exam", 
+      caption: "Grade 10 Amateur Piano Exam", 
       description: "I passed the Grade 10 (highest level) of Amateur Piano Exam in Chinese Musician Association in 2015, after 5 years of outside-class piano lessons",
       path: "assets/piano_grade10.png",
     },
@@ -74,7 +74,7 @@ const portfolioData = {
       id: 2, 
       caption: "New Year in High School", 
       description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School in 2022",
-      path: "assets/new_year.JPG",
+      path: "assets/new_year.jpg",
     },
     { 
       id: 3, 
@@ -241,7 +241,7 @@ const Hero = () => (
     <div className="flex flex-col md:flex-row gap-12 items-start">
       <div className="flex-1 space-y-6">
         <div className="inline-block px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-sm font-medium border border-indigo-500/20">
-          Graduate School Applicant
+          Music Technology Applicant
         </div>
         <h1 className="text-5xl md:text-6xl font-extrabold text-slate-100 leading-tight">
           {portfolioData.personal.name}
