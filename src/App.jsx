@@ -24,7 +24,7 @@ const portfolioData = {
     bio: "I'm Mingyang Yao, a senior undergraduate of Mathematics-Computer Science and Cognitive Science (neural computation and machine learning) at UCSD. My research interests lies in generative models for music and music information retrieval (MIR). I wish to develop collaborative and creative music AI system in the future.",
     email: "m5yao@ucsd.edu",
     github: "https://github.com/AndyWeasley2004",
-    googleScholar: "https://scholar.google.com",
+    googleScholar: "https://scholar.google.com/citations?user=sBRCuJYAAAAJ&hl=en",
     photoPath: "assets/photo.jpg", 
   },
   papers: [
@@ -77,7 +77,7 @@ const portfolioData = {
       description: "Generated with Temperature 1.1, Tempo 160, 3/4 Time Signature",
       relatedPaperId: "paper1",
       midiUrl: "assets/chopin.mid",
-      handSplitPitch: 65
+      handSplitPitch: 68
     }
   ],
   gallery: [
@@ -91,7 +91,7 @@ const portfolioData = {
       id: 2, 
       caption: "New Year Performance (Grade 12)", 
       description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School in 2022",
-      path: "/assets/new_year.png",
+      path: "assets/new_year.png",
     },
     {
       id: 3, 
