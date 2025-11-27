@@ -1,92 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, FileText, Github, Linkedin, Mail, ExternalLink, Music, Cpu, Layers, ArrowDownCircle } from 'lucide-react';
-
-/**
- * MUSIC TECHNOLOGY PORTFOLIO TEMPLATE
- * * --- GITHUB PAGES DEPLOYMENT INSTRUCTIONS ---
- * 1. This template uses relative paths (e.g., "assets/...") to ensure it works
- * if your site is hosted at "username.github.io/repo-name/".
- * 2. In your package.json, ensure you add: "homepage": "https://<username>.github.io/<repo-name>",
- * 3. Place your images in the "public/assets" folder of your React project.
- */
+import React from 'react';
+import { FileText, Github, Mail, ExternalLink, Music, Cpu, Layers, ArrowDownCircle } from 'lucide-react';
+import 'html-midi-player';
 
 // --- DATA CONFIGURATION ---
 const portfolioData = {
   personal: {
-    name: "Alex Composer",
-    title: "Music Technology Researcher & Developer",
-    bio: "I am a researcher and composer bridging the gap between symbolic AI and creative expression. My work focuses on generative deep learning models for music composition and real-time audio analysis.",
-    email: "alex@example.com",
-    github: "https://github.com",
-    arxiv: "https://arxiv.org",
-    linkedin: "https://linkedin.com",
-    // NOTE: Use relative paths (no leading slash) for GH Pages compatibility
-    photoPath: "assets/profile.jpg", 
-    fallbackPhoto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
+    name: "Mingyang Yao",
+    title: "Undergraduate Student at UC San Diego",
+    bio: "I'm Mingyang Yao, a senior undergraduate of Mathematics-Computer Science and Cognitive Science at UCSD. My research interests lies in generative models for music and music information retrieval.",
+    email: "m5yao@ucsd.edu",
+    github: "https://github.com/AndyWeasley2004",
+    photoPath: "assets/photo.jpg", 
   },
   papers: [
     {
       id: "paper1",
-      title: "Generative Transformer for Polyphonic Music",
+      title: "From Generality to Mastery: Composer-Style Symbolic Music Generation via Large-Scale Pre-training",
       type: "Research Paper",
-      role: "Lead Researcher",
+      role: "First Author",
       links: [
-        { label: "Read on arXiv", url: "#", icon: FileText },
-        { label: "View Full Project", url: "#", icon: ExternalLink }
+        { label: "Read on arXiv", url: "https://arxiv.org/abs/2506.17497", icon: FileText },
+        { label: "View Full Project Demo", url: "https://generality-mastery.github.io/", icon: ExternalLink },
+        { label: "GitHub Repo", url: "https://github.com/AndyWeasley2004/Generality-to-Mastery", icon: Github }
       ],
-      abstract: "This paper introduces a novel transformer-based architecture for multi-track MIDI generation. Unlike previous tokenization methods, this model utilizes a relative-pitch encoding scheme that improves harmonic consistency. The system was trained on the Lakh MIDI dataset and achieves state-of-the-art results.",
-      techStack: ["Python", "PyTorch", "Flask"],
+      abstract: "We address data scarcity in style-specific generation using a two-stage training paradigm. By pre-training a model on a broad corpus with extended REMI representation and fine-tuning with lightweight adapters on verified datasets of Bach, Mozart, Beethoven, and Chopin, we achieve superior style accuracy and musicality compared to concurrent baselines.",
+      techStack: ["PyTorch", "MIDI", "Transformer"],
       // Figure 1: Architecture
-      visualPath: "assets/paper1_arch.png",
-      fallbackVisual: "https://placehold.co/600x300/1e293b/a5b4fc?text=Model+Architecture+Diagram",
+      visualPath: "assets/paper_1_arch.png",
       hasDemos: true,
       demoSectionId: "demos" 
     },
     {
       id: "paper2",
-      title: "Real-Time Symbolic Chord Recognition",
+      title: "BACHI: Boundary-Aware Symbolic Chord Recognition Through Masked Iterative Decoding on Pop and Classical Music",
       type: "Research Paper",
-      role: "Co-author",
+      role: "First Author",
       links: [
-        { label: "Read on arXiv", url: "#", icon: FileText },
-        { label: "GitHub Repo", url: "#", icon: Github }
+        { label: "Read on arXiv", url: "https://arxiv.org/abs/2510.06528", icon: FileText },
+        { label: "View Full Project Demo", url: "https://andyweasley2004.github.io/BACHI/", icon: ExternalLink },
+        { label: "GitHub Repo", url: "https://github.com/AndyWeasley2004/BACHI_Chord_Recognition", icon: Github }
       ],
-      abstract: "We present a lightweight Convolutional Neural Network (CNN) capable of identifying complex jazz chords from symbolic MIDI streams with <10ms latency. My contribution focused on pruning the model for edge-device deployment without significant accuracy loss.",
-      techStack: ["TensorFlow", "C++", "Juce"],
+      abstract: "We propose BACHI, a symbolic chord recognition model that mirrors human analysis by iteratively ranking chord roots, qualities, and bass notes. We also introduce POP909-CL, an enhanced dataset with tempo-aligned labels. Experiments demonstrate state-of-the-art performance on both classical and pop music benchmarks.",
+      techStack: ["PyTorch", "Piano Roll", "Chord"],
       // Figure 2: Confusion Matrix / Technical Illustration
-      visualPath: "assets/paper2_confusion.png",
-      fallbackVisual: "https://placehold.co/600x400/1e293b/22d3ee?text=Confusion+Matrix+%2F+Predictions",
+      visualPath: "assets/paper_2_arch.png",
       hasDemos: false
     }
   ],
   demos: [
     {
       id: "demo1",
-      title: "Transformer Output: Bach Chorale Style",
-      description: "Generated with Temperature 0.8, conditioned on C Major key signature.",
-      relatedPaperId: "paper1"
+      title: "Generality-to-Mastery Output: Bach Style",
+      description: "Generated with Temperature 1.1, Tempo 120, 4/4 Time Signature",
+      relatedPaperId: "paper1",
+      midiUrl: "assets/bach.mid"
     },
     {
       id: "demo2",
-      title: "Transformer Output: Jazz Improvisation",
-      description: "Model conditioned on a standard ii-V-I progression.",
-      relatedPaperId: "paper1"
+      title: "Generality-to-Mastery Output: Chopin Style",
+      description: "Generated with Temperature 1.1, Tempo 160, 3/4 Time Signature",
+      relatedPaperId: "paper1",
+      midiUrl: "assets/chopin.mid"
     }
   ],
   gallery: [
     { 
       id: 1, 
-      caption: "Performing at NIME 2023", 
-      description: "Performed a live set using a custom-built glove controller to manipulate granular synthesis parameters in real-time.",
-      path: "assets/activity1.jpg",
-      fallback: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?auto=format&fit=crop&q=80&w=600"
+      caption: "Grade 10 AmateurPiano Exam", 
+      description: "I passed the Grade 10 (highest level) of Amateur Piano Exam in Chinese Musician Association in 2015, after 5 years of outside-class piano lessons",
+      path: "assets/piano_grade10.png",
     },
     { 
       id: 2, 
-      caption: "Hackathon Winner", 
-      description: "Developed 'Gesture Synth', a web-based instrument using MediaPipe for hand tracking, winning First Place at MusicHacks 2022.",
-      path: "assets/activity2.jpg",
-      fallback: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600"
+      caption: "New Year in High School", 
+      description: "I performed Mendelssohn's Spring Song (Op. 62, No. 6) at New Year's Party in High School in 2022",
+      path: "assets/new_year.JPG",
     },
     { 
       id: 3, 
@@ -108,124 +96,32 @@ const getLocalUrl = (localPath, fallbackUrl) => {
 
 // --- COMPONENTS ---
 
-const MidiVisualizer = ({ isPlaying, color = "#a5b4fc" }) => {
-  const canvasRef = useRef(null);
-  
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-    let offset = 0;
-    
-    // Mock Data for visualization
-    const notes = Array.from({ length: 50 }).map((_, i) => ({
-      x: i * 40,
-      y: Math.random() * (canvas.height - 20) + 10,
-      w: Math.random() * 30 + 10,
-      h: 8
-    }));
-
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Grid
-      ctx.fillStyle = "#1e293b"; // Slate-800
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = "#334155";
-      ctx.lineWidth = 1;
-      for(let i=0; i<canvas.width; i+=40) {
-        ctx.beginPath();
-        ctx.moveTo(i - (offset % 40), 0);
-        ctx.lineTo(i - (offset % 40), canvas.height);
-        ctx.stroke();
-      }
-
-      // Notes
-      ctx.fillStyle = color;
-      notes.forEach(note => {
-        let drawX = note.x - offset;
-        if (drawX < -50) note.x += 2000; 
-        if (drawX > -50 && drawX < canvas.width) {
-          ctx.beginPath();
-          ctx.roundRect(drawX, note.y, note.w, note.h, 4);
-          ctx.fill();
-        }
-      });
-
-      // Playhead
-      ctx.strokeStyle = "#ef4444";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(100, 0);
-      ctx.lineTo(100, canvas.height);
-      ctx.stroke();
-
-      if (isPlaying) {
-        offset += 2;
-        animationFrameId = requestAnimationFrame(render);
-      }
-    };
-    render();
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [isPlaying, color]);
-
-  return <canvas ref={canvasRef} width={600} height={120} className="w-full h-32 rounded-lg border border-slate-700 bg-slate-900" />;
-};
-
 const AudioPlayerCard = ({ demo }) => {
-  const [playing, setPlaying] = useState(false);
-  const audioCtx = useRef(null);
-  const oscillator = useRef(null);
-
-  const togglePlay = () => {
-    if (!audioCtx.current) {
-      audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (!playing) {
-      oscillator.current = audioCtx.current.createOscillator();
-      const gainNode = audioCtx.current.createGain();
-      oscillator.current.type = 'sine';
-      oscillator.current.frequency.setValueAtTime(220 + Math.random() * 200, audioCtx.current.currentTime); 
-      gainNode.gain.setValueAtTime(0.1, audioCtx.current.currentTime);
-      oscillator.current.connect(gainNode);
-      gainNode.connect(audioCtx.current.destination);
-      oscillator.current.start();
-      setPlaying(true);
-    } else {
-      if (oscillator.current) {
-        oscillator.current.stop();
-        oscillator.current.disconnect();
-      }
-      setPlaying(false);
-    }
-  };
-
   return (
     <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-indigo-500 transition-all group">
-      <div className="flex flex-col md:flex-row gap-6 items-center">
-        {/* Controls */}
-        <div className="flex-shrink-0">
-             <button 
-              onClick={togglePlay}
-              className={`w-16 h-16 flex items-center justify-center rounded-full ${playing ? 'bg-indigo-500 text-white' : 'bg-slate-700 text-slate-300'} hover:bg-indigo-600 transition-all shadow-lg`}
-            >
-              {playing ? <Pause size={24} /> : <Play size={24} className="ml-1" />}
-            </button>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-start">
+          <div>
+            <h4 className="font-bold text-slate-100 text-lg">{demo.title}</h4>
+            <p className="text-sm text-slate-400">{demo.description}</p>
+          </div>
+          <span className="text-xs font-mono bg-slate-900 px-2 py-1 rounded text-indigo-400 border border-slate-700">
+            Related: {portfolioData.papers.find(p => p.id === demo.relatedPaperId)?.title.substring(0, 15)}...
+          </span>
         </div>
 
-        {/* Info & Visualizer */}
-        <div className="flex-grow w-full space-y-3">
-            <div className="flex justify-between items-start">
-                <div>
-                    <h4 className="font-bold text-slate-100 text-lg">{demo.title}</h4>
-                    <p className="text-sm text-slate-400">{demo.description}</p>
-                </div>
-                <span className="text-xs font-mono bg-slate-900 px-2 py-1 rounded text-indigo-400 border border-slate-700">
-                    Related: {portfolioData.papers.find(p => p.id === demo.relatedPaperId)?.title.substring(0, 15)}...
-                </span>
-            </div>
-            
-            <MidiVisualizer isPlaying={playing} />
+        <div className="w-full rounded-lg overflow-hidden bg-slate-900 border border-slate-700 p-4">
+          <midi-player
+            src={demo.midiUrl}
+            sound-font
+            visualizer={`#visualizer-${demo.id}`}
+            style={{ width: '100%' }}
+          ></midi-player>
+          <midi-visualizer
+            type="piano-roll"
+            id={`visualizer-${demo.id}`}
+            style={{ width: '100%', height: '200px', marginTop: '1rem', borderRadius: '0.5rem', background: '#0f172a' }}
+          ></midi-visualizer>
         </div>
       </div>
     </div>

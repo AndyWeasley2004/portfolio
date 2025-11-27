@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://AndyWeasley2004.github.io/portfolio/",
   "dependencies": {
+    "html-midi-player": "^1.6.0",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
