@@ -97,7 +97,7 @@ const portfolioData = {
       id: 3, 
       caption: "Second Prize in Performance Contest (Grade 7)", 
       description: "I won the second prize in the instrument performance contest of Grade 7 in my middle school with Chopin's Waltz, Op. 69, No. 2",
-      path: "assets/second_prize.jpg",
+      path: "assets/second_prize.png",
     }
   ],
   video: {
